@@ -2,12 +2,34 @@ import discord
 import click
 import sys
 @click.command()
-@click.option("--bot-token", prompt="Your discord bot token", help="Discord Bot Token", hide_input=True, confirmation_prompt=True)
+@click.option("--config-path", help="Path to the config file")
+def main(config_path):
+    if config_path:
+        click.echo("Using config file")
+    else:
+        if click.prompt("No config file provided. Create one now? (y/n)").lower() == "y":
+            bot_token = click.prompt("Enter your bot token")
+            while not bot_token:
+                bot_token = click.prompt("Enter your bot token")
+            if click.prompt("Use the OpenAI api? (y/n)").lower() == "y":
+                openai_api_key = click.prompt("Enter your OpenAI api key")
+                while not openai_api_key:
+                    openai_api_key = click.prompt("Enter your OpenAI api key")
+                api = "OpenAI"
+            else:
+                click.echo("Defaulting to Ollama")
+                api = "Ollama"
+        else:
+            click.echo("Exiting...")
+            sys.exit(1)
 
-
-def main(token):
-    print("Your bot token is: ", token)
-    pass
-
+        #Create the TOML file
+        with open("config.toml", "w") as f:
+            f.write(f"bot_token = \"{bot_token}\"\n")
+            f.write(f"api = \"{api}\"\n")
+            if api == "OpenAI":
+                f.write(f"openai_api_key = \"{openai_api_key}\"\n")
+            f.close()
+            
 if __name__ == "__main__":
     main()
