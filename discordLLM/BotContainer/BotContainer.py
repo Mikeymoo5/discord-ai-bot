@@ -17,3 +17,11 @@ class BotContainer:
         @self.client.event
         async def on_ready():
             print(f'{self.client.user} has connected to Discord!')
+        
+        @self.client.event
+        async def on_message(message):
+            if message.author == self.client.user:
+                return
+
+            if self.client.user in message.mentions:
+                await message.channel.send("Hello!")
