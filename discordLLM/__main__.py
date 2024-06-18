@@ -1,4 +1,3 @@
-import discord
 import click
 import sys
 from BotContainer.BotContainer import BotContainer
@@ -37,9 +36,9 @@ def main(config_path):
     # TODO: Automatically use path provided
     config = configparser.ConfigParser()
     config.read("config.toml")
-    click.echo("bot token is " + config["BOT"]["bot_token"])
-    Bot = BotContainer(config["BOT"]["bot_token"]) # TODO: Automatically parse the token from the config file
-    
+    Bot = BotContainer(config["BOT"]["bot_token"])
+    Bot.register_events()
+    Bot.run()
 
 if __name__ == "__main__":
     main()
