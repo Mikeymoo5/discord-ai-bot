@@ -26,8 +26,8 @@ def main(config_path):
 
         #Create the TOML configuration file
         with open("config.toml", "w") as f:
-            f.write("[BOT]")
-            f.write(f"bot_token = \"{bot_token}\"\n")
+            f.write("[BOT]\n")
+            f.write(f"bot_token = {bot_token}\n")
             f.write(f"api = \"{api}\"\n")
             if api == "OpenAI":
                 f.write(f"openai_api_key = \"{openai_api_key}\"\n")
@@ -37,7 +37,7 @@ def main(config_path):
     config = configparser.ConfigParser()
     config.read("config.toml")
     Bot = BotContainer(config["BOT"]["bot_token"])
-    Bot.register_events()
+    Bot.register_events
     Bot.run()
 
 if __name__ == "__main__":
