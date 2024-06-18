@@ -1,7 +1,8 @@
 import discord
 import click
 import sys
-from discordLLM.BotContainer import BotContainer
+from BotContainer.BotContainer import BotContainer
+import configparser
 @click.command()
 @click.option("--config-path", help="Path to the config file")
 def main(config_path):
@@ -26,13 +27,19 @@ def main(config_path):
 
         #Create the TOML configuration file
         with open("config.toml", "w") as f:
+            f.write("[BOT]")
             f.write(f"bot_token = \"{bot_token}\"\n")
             f.write(f"api = \"{api}\"\n")
             if api == "OpenAI":
                 f.write(f"openai_api_key = \"{openai_api_key}\"\n")
             f.close()
-    # Create the bot object
-    Container = BotContainer(1) # TODO: Automatically parse the token from the config file
+
+    # TODO: Automatically use path provided
+    config = configparser.ConfigParser()
+    config.read("config.toml")
+    click.echo("bot token is " + config["BOT"]["bot_token"])
+    Bot = BotContainer(config["BOT"]["bot_token"]) # TODO: Automatically parse the token from the config file
+    
 
 if __name__ == "__main__":
     main()
