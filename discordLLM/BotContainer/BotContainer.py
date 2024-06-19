@@ -7,14 +7,14 @@ class BotContainer:
         # Initialize the bot
         self.intents = discord.Intents.default()
         self.intents.message_content = True
-        
         self.client = discord.Client(intents=self.intents)
         
     def run(self):
-        # print(self.token)
         self.client.run(self.token)
+
     def create_persona(self, api, model):
-        self.LLM = LLMHandler(api, model)  
+        self.LLM = LLMHandler(api, model)
+        
     def register_events(self):
         @self.client.event
         async def on_ready():
@@ -22,10 +22,12 @@ class BotContainer:
         
         @self.client.event
         async def on_message(message):
+            # Prevent the bot from responding to itself
             if message.author == self.client.user:
                 return
-
-            if self.client.user in message.mentions:
-                await message.channel.send(self.LLM.request(message.content))
+            
+            # If the bot is mentioned, respond with the LLM
+            if self.client.user in message.mentions: 
+                await message.reply(self.LLM.request(message.content))
 
             
