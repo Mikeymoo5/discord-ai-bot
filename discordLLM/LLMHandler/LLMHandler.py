@@ -2,19 +2,33 @@
 import requests
 class LLMHandler:
     def __init__(self, api, model):
-        # self.memory = {}
+        self.memory = [{"role": "system", "content": "You are a helpful assistant."}]
         self.api = api
         if api == "OpenAI":
             self.endpoint = "" #TODO: Implement support for different OPENAI endpoints
             return NotImplementedError #TODO: Implement OpenAI support
-        self.endpoint = "http://localhost:11434/api/generate"
+        self.endpoint = "http://localhost:11434/api/chat"
         self.model = model
 
     def request(self, prompt):
-        # Send the prompt to the LLM
+        # Add the prompt to memory
+        self.memory.append({
+            "role": "user",
+            "content": prompt
+        })
+
+        # Send the request to the LLM
         response = requests.post(self.endpoint, json={
             "model": self.model,
-            "prompt": prompt,
+            "messages": self.memory,
             "stream": False
         })
-        return response.json()["response"]
+
+        #Add the LLM's response to memory
+        self.memory.append({
+            "role": "assistant",
+            "content": response.json()["message"]["content"]
+        })
+        #return the response
+
+        return response.json()["message"]["content"]
