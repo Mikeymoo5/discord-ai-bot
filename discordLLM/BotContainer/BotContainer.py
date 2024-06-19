@@ -48,5 +48,3 @@ class BotContainer:
         async def changepersona(ctx, persona):
             await ctx.respond(f"Switching persona to: {persona}")
             self.create_persona(self.llm_api, persona)
-
-            

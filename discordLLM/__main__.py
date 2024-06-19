@@ -55,9 +55,20 @@ def create_config():
         f.write(f"bot_token = \"{bot_token}\"\n")
         f.write(f"guild_id = {guild_id}\n")
         f.write(f"api = \"{api}\"\n")
+        f.write("default_persona = \"ASSISTANT\"\n")
         if api == "OpenAI":
-            f.write(f"openai_api_key = {openai_api_key}\n")
-        f.write("\n[PERSONAS]")
+            f.write(f"key = \"{openai_api_key}\"\n")
+            f.write("\n[PERSONAS]\n")
+            f.write("[PERSONA-ASSISTANT]")
+            f.write("model = \"gpt-3.5-turbo\"\n")
+            f.write("prompt = \"You are a helpful AI assistant.\"\n")
+        else: 
+            f.write(f"key = \"0\"\n")
+            f.write("\n[PERSONAS]\n")
+            f.write("[PERSONA-ASSISTANT]\n")
+            f.write("model = \"llama3\"\n")
+            f.write("prompt = \"You are a helpful AI assistant.\"\n")
+       
         f.close()
 
 if __name__ == "__main__":
