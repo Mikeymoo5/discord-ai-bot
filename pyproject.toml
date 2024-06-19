@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 py-cord = "^2.5.0"
 click = "^8.1.7"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.test.dependencies]

@@ -1,7 +1,6 @@
 import click
 import sys
 from BotContainer.BotContainer import BotContainer
-from LLMHandler.LLMHandler import LLMHandler
 import configparser
 @click.command()
 @click.option("--config-path", help="Path to the config file")
@@ -38,9 +37,8 @@ def main(config_path):
     config = configparser.ConfigParser()
     config.read("config.toml")
 
-    LLM = LLMHandler(config["BOT"]["api"]) #TODO: Add Ollama and OpenAI support
-
     Bot = BotContainer(config["BOT"]["bot_token"])
+    Bot.create_persona(config["BOT"]["api"], "llama3")
     Bot.register_events()
     Bot.run()
 
