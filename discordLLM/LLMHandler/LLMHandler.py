@@ -29,6 +29,6 @@ class LLMHandler:
             "role": "assistant",
             "content": response.json()["message"]["content"]
         })
-        #return the response
 
+        #return the response
         return response.json()["message"]["content"]

@@ -1,7 +1,7 @@
 import click
 import sys
 from BotContainer.BotContainer import BotContainer
-import configparser
+import toml
 @click.command()
 @click.option("--config-path", help="Path to the config file")
 def main(config_path):
@@ -9,10 +9,9 @@ def main(config_path):
         click.echo("Using config file")
     else:
         create_config()
-    # TODO: Automatically use path provided by the user
-    config = configparser.ConfigParser()
-    config.read("config.toml")
 
+    # Load the configuration file
+    config = toml.load("config.toml")
     Bot = BotContainer(config["BOT"]["bot_token"]) # Create an instance of the BotContainer
     Bot.create_persona(config["BOT"]["api"], "llama3") # Create an instance of the LLMHandler
     Bot.register_events() # Register the events that the bot will respond to
@@ -38,8 +37,8 @@ def create_config():
     #Create the TOML configuration file
     with open("config.toml", "w") as f:
         f.write("[BOT]\n")
-        f.write(f"bot_token = {bot_token}\n")
-        f.write(f"api = \"{api}\n")
+        f.write(f"bot_token = \"{bot_token}\"\n")
+        f.write(f"api = \"{api}\"\n")
         if api == "OpenAI":
             f.write(f"openai_api_key = {openai_api_key}\n")
         f.close()
