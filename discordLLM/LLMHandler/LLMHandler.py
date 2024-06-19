@@ -1,13 +1,13 @@
 # I chose to make LLMHandler a class so that each class/object of the LLM will have its own memory;
 import requests
 class LLMHandler:
-    def __init__(self, api, model, prompt: str = "You are a helpful AI assistant."):
+    def __init__(self, api, key, model, prompt: str = "You are a helpful AI assistant."):
         self.memory = [{"role": "system", "content": prompt}]
         self.api = api
         if api == "OpenAI":
-            self.endpoint = "" #TODO: Implement support for different OPENAI endpoints
-            return NotImplementedError #TODO: Implement OpenAI support
-        self.endpoint = "http://localhost:11434/api/chat"
+            self.endpoint = "https://api.openai.com/v1/chat/completions"
+        else: 
+            self.endpoint = "http://localhost:11434/api/chat"
         self.model = model
 
     def request(self, prompt):
@@ -18,13 +18,17 @@ class LLMHandler:
         })
 
         # Send the request to the LLM
+        headers = {}
+        if self.api == "OpenAI":
+            headers = {"Authorization": f"Bearer {self.api}"}
+
         response = requests.post(self.endpoint, json={
             "model": self.model,
             "messages": self.memory,
             "stream": False
-        })
+        }, headers=headers)
 
-        #Add the LLM's response to memory
+        # Add the LLM's response to memory
         self.memory.append({
             "role": "assistant",
             "content": response.json()["message"]["content"]

@@ -3,10 +3,11 @@ from LLMHandler.LLMHandler import LLMHandler
 import toml
 import os
 class BotContainer:
-    def __init__(self, bot_token, guild_id, llm_api, default_persona):
+    def __init__(self, bot_token, guild_id, llm_api, llm_key, default_persona):
         self.token = bot_token
         self.guild_id = guild_id
         self.llm_api = llm_api
+        self.llm_key = llm_key
         # Create the persona
         self.create_persona(self.llm_api, default_persona)
         # Initialize the bot
@@ -26,7 +27,7 @@ class BotContainer:
         except KeyError:
             print(f"Persona {persona_name} not found in config.toml")
             return
-        self.LLM = LLMHandler(api, model, prompt)
+        self.LLM = LLMHandler(api, self.llm_key, model, prompt)
 
     def register_events(self):
         @self.bot.event

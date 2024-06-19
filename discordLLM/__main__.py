@@ -12,7 +12,7 @@ def main(config_path):
 
     # Load the configuration file
     config = toml.load("config.toml")
-    Bot = BotContainer(config["BOT"]["bot_token"], config["BOT"]["guild_id"], config["BOT"]["api"], config["BOT"]["default_persona"]) # Create an instance of the BotContainer
+    Bot = BotContainer(config["BOT"]["bot_token"], config["BOT"]["guild_id"], config["BOT"]["api"], config["BOT"]["key"], config["BOT"]["default_persona"]) # Create an instance of the BotContainer
     # Persona creation is handled automagically by BotContainer
     Bot.register_events() # Register the events that the bot will respond to
     Bot.run() # Run the bot!
