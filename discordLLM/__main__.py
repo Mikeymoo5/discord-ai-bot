@@ -41,6 +41,7 @@ def create_config():
         f.write(f"api = \"{api}\"\n")
         if api == "OpenAI":
             f.write(f"openai_api_key = {openai_api_key}\n")
+        f.write("\n[PERSONAS]")
         f.close()
 
 if __name__ == "__main__":

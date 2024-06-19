@@ -1,8 +1,8 @@
 # I chose to make LLMHandler a class so that each class/object of the LLM will have its own memory;
 import requests
 class LLMHandler:
-    def __init__(self, api, model):
-        self.memory = [{"role": "system", "content": "You are a helpful assistant."}]
+    def __init__(self, api, model, prompt: str = "You are a helpful AI assistant."):
+        self.memory = [{"role": "system", "content": prompt}]
         self.api = api
         if api == "OpenAI":
             self.endpoint = "" #TODO: Implement support for different OPENAI endpoints
