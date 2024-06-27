@@ -1,21 +1,24 @@
 import discord
 from discord_llm.llm import LLMHandler
 import toml
-import os
 
 
 class BotContainer:
-    def __init__(self, bot_token, guild_id, llm_api, llm_key, default_persona):
-        self.token = bot_token
-        self.guild_id = guild_id
-        self.llm_api = llm_api
-        self.llm_key = llm_key
+    def __init__(self, config: dict):
+        self.bot = discord.Client()
+        self.token = config["bot"]["token"]
+        self.guild_id = config["bot"]["guild_id"]
+        self.llm_api = config["ai"]["api"]
+        self.llm_base_url = config["ai"]["base_url"]
+        self.llm_key = config["ai"].get("key")
+        self.LLM = None
         # Create the persona
-        self.create_persona(self.llm_api, default_persona)
+        self.create_persona(self.llm_api, "default")
         # Initialize the bot
         self.intents = discord.Intents.default()
         self.intents.message_content = True
         self.bot = discord.Bot(intents=self.intents)
+        self.create_persona(self.llm_api, "default")
 
     def run(self):
         self.bot.run(self.token)
@@ -23,9 +26,9 @@ class BotContainer:
     def create_persona(self, api, persona_name):
         config = toml.load("config.toml")  # TODO: CHANGE THIS TO USER PROVIDED PATH
         try:
-            persona_name = persona_name.upper()
-            model = config[f"PERSONA-{persona_name}"]["model"]
-            prompt = config[f"PERSONA-{persona_name}"]["prompt"]
+            name = persona_name.lower()
+            model = config["persona"][name]["model"]
+            prompt = config["persona"][name]["prompt"]
         except KeyError:
             print(f"Persona {persona_name} not found in config.toml")
             return

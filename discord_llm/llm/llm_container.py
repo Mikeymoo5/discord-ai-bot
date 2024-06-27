@@ -4,8 +4,9 @@ import requests
 
 class LLMHandler:
     def __init__(
-        self, api, key, model, prompt: str = "You are a helpful AI assistant."
+        self, api: str, base_url: str, key: str, model: str, prompt: str = "You are a helpful AI assistant."
     ):
+        # API can be `OpenAI-like` or `Ollama`. Run .lower() to be safe
         self.memory = [{"role": "system", "content": prompt}]
         self.api = api
         if api == "OpenAI":
