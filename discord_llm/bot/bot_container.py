@@ -2,6 +2,8 @@ import discord
 from discord_llm.llm import LLMHandler
 import toml
 import os
+
+
 class BotContainer:
     def __init__(self, bot_token, guild_id, llm_api, llm_key, default_persona):
         self.token = bot_token
@@ -14,12 +16,12 @@ class BotContainer:
         self.intents = discord.Intents.default()
         self.intents.message_content = True
         self.bot = discord.Bot(intents=self.intents)
-        
+
     def run(self):
         self.bot.run(self.token)
 
     def create_persona(self, api, persona_name):
-        config = toml.load("config.toml")  #TODO: CHANGE THIS TO USER PROVIDED PATH
+        config = toml.load("config.toml")  # TODO: CHANGE THIS TO USER PROVIDED PATH
         try:
             persona_name = persona_name.upper()
             model = config[f"PERSONA-{persona_name}"]["model"]
@@ -32,16 +34,16 @@ class BotContainer:
     def register_events(self):
         @self.bot.event
         async def on_ready():
-            print(f'{self.bot.user} has connected to Discord!')
-        
+            print(f"{self.bot.user} has connected to Discord!")
+
         @self.bot.event
         async def on_message(message):
             # Prevent the bot from responding to itself
             if message.author == self.bot.user:
                 return
-            
+
             # If the bot is mentioned, respond with the LLM
-            if self.bot.user in message.mentions: 
+            if self.bot.user in message.mentions:
                 await message.reply(self.LLM.request(message.content))
 
         @self.bot.slash_command(guild_ids=[self.guild_id])
