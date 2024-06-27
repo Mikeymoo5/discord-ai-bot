@@ -1,8 +1,7 @@
 # Project config file
 config.toml
 
-#MISC
-.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
