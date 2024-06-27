@@ -13,8 +13,7 @@ def main(config_path):
 
     # Load the configuration file
     config = toml.load(config_path)
-    Bot = BotContainer(
-    )  # Create an instance of the BotContainer
+    Bot = BotContainer(config)  # Create an instance of the BotContainer
     # Persona creation is handled automagically by BotContainer
     Bot.register_events()  # Register the events that the bot will respond to
     Bot.run()  # Run the bot!
@@ -72,13 +71,13 @@ def create_config():
         },
         "ai": {
             "type": api,
-            "model": model,
         },
         "persona": {
             "default": {
                 "prompt": "You are a helpful AI assistant.",
+                "model": model,
             }
-        }
+        },
     }
 
     # Update the configuration with API-specific settings

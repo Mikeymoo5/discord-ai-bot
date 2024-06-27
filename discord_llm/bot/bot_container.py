@@ -8,17 +8,23 @@ class BotContainer:
         self.bot = discord.Client()
         self.token = config["bot"]["token"]
         self.guild_id = config["bot"]["guild_id"]
-        self.llm_api = config["ai"]["api"]
+        self.llm_api = config["ai"]["type"]
         self.llm_base_url = config["ai"]["base_url"]
         self.llm_key = config["ai"].get("key")
-        self.LLM = None
+        # This shouldn't be needed as long as create_persona is called and it instantiates the LLM
+        # self.LLM = LLMHandler(
+        #     api=self.llm_api,
+        #     base_url=self.llm_base_url,
+        #     key=self.llm_key,
+        #     model=config["ai"]["model"],
+        #     prompt=config["persona"]["default"]["prompt"],
+        # )
         # Create the persona
         self.create_persona(self.llm_api, "default")
         # Initialize the bot
         self.intents = discord.Intents.default()
         self.intents.message_content = True
         self.bot = discord.Bot(intents=self.intents)
-        self.create_persona(self.llm_api, "default")
 
     def run(self):
         self.bot.run(self.token)
@@ -32,7 +38,13 @@ class BotContainer:
         except KeyError:
             print(f"Persona {persona_name} not found in config.toml")
             return
-        self.LLM = LLMHandler(api, self.llm_key, model, prompt)
+        self.LLM = LLMHandler(
+            api=api,
+            base_url=self.llm_base_url,
+            key=self.llm_key,
+            model=model,
+            prompt=prompt,
+        )
 
     def register_events(self):
         @self.bot.event
