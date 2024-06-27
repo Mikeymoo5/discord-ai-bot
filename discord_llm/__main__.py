@@ -1,6 +1,6 @@
 import click
 import sys
-from BotContainer.BotContainer import BotContainer
+from discord_llm.bot import BotContainer
 import toml
 import os
 @click.command()

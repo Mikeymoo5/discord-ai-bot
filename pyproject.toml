@@ -4,6 +4,9 @@ version = "0.1.0"
 description = ""
 authors = ["Mikeymoo5 <moodids@outlook.com>"]
 readme = "README.md"
+packages = [
+    { include = "discord_llm"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -15,6 +18,9 @@ toml = "^0.10.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.2"
+
+[tool.poetry.scripts]
+discordllm = "discord_llm.__main__:main"
 
 [build-system]
 requires = ["poetry-core"]

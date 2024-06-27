@@ -1,5 +1,5 @@
 import discord
-from LLMHandler.LLMHandler import LLMHandler
+from discord_llm.llm import LLMHandler
 import toml
 import os
 class BotContainer:
